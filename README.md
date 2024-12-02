@@ -15,6 +15,7 @@ I added the high to low, learn what is the most important and what you don't kno
 |  4.0  |   Automation, Orchestration, and Scripting   | 17% |
 
 # Sub-Doamins
+## 1.0 System Management
 |   |                                1.0 System Management                               |
 |---|------------------------------------------------------------------------------------|
 |1.1|                            Explain basic Linux concepts                            |
@@ -24,8 +25,6 @@ I added the high to low, learn what is the most important and what you don't kno
 |1.5|        Given a scenario, manage a Linux system using common shell operations       |
 |1.6|     Given a scenario, perform backup and restore operations for a Linux server     |
 |1.7|                      Summarize virtualization on Linux systems                     |
-
-## 1.0 System Management
 ### 1.1 Explain basic Linux concepts
 **Software licensing**
 * **Resources**
@@ -348,6 +347,9 @@ rsync -aAXv --delete --exclude={/home/Skip1/* /home/Skip2/* /home/Skip3/*} /home
 
 **Privileged vs. unprivileged**
 
+**Resources**
+* [Docker Essentials](https://youtube.com/playlist?list=PLT98CRl2KxKECHltRib03tG8pyKEzwf9t&si=QROt-rx3mWprtm0Z)
+
 ## 3.0 Security
 |   |                                      3.0 Security                                     |
 |---|---------------------------------------------------------------------------------------|
@@ -357,6 +359,97 @@ rsync -aAXv --delete --exclude={/home/Skip1/* /home/Skip2/* /home/Skip3/*} /home
 |3.4|                Explain account hardening techniques and best practices                |
 |3.5|        Explain cryptographic concepts and technologies in a Linux environment         |
 |3.6|                Explain the importance of compliance and audit procedures              |
+### 3.1 Summarize authorization, authentication, and accounting methods
+* Polkit
+* Pluggable Authentication Modules (PAM)
+* System Security Services Daemon (SSSD)/Winbind
+* realm
+* Lightweight Directory Access Protocol (LDAP)
+* Kerberos
+* Samba
+* Logging
+    * journalctl
+    * rsyslog
+    * logrotate
+    * /var/log
+* System audit
+    * audit.rules
+    * auditd
+
+#### Kerberos
+* Network authentication protocol
+* Authenticate once, trusted by the system. No need to re-authenticate.
+* Mutual authentication, Client and the server only. Protects against man-in-the-middle or replay attacks.
+* Kerberos as in, ...
+    * **Key Distribution Center (KDC)** The user sends there password, username and other authentication information if needed. Runs on TCP/88 or UDP/88, the first head
+    * **Authentication Service (AS)** It authenticates the user and provides access to the network, the second head
+    * **Ticket Granting Service** Provides the user with tickets, Tickets that gain access to resources on the network. the last head
+
+**Client Authentication**<br>
+Before you can gain access to the network's resources you need to first authenticate.
+* Step 1<br>
+    * The client sends there logon request to the Key Distribution Center. The logon request is encrypted with the date and time on the local computer. The password hash is the key, this does not sends to the Key Distribution Center. The Key Distribution Center already has the user hased password. The password hash isn't sent across the network.
+* Step 2<br>
+    * The Key Distribution Center receives the encrypted package and it decrypts it with the client's hased password. Makes sure that the time frame is within the five minute pariod. This is very time sensitive. Also makes sure that everyting is legitimate and sends back a **Ticket Granting Ticket**. 
+    * The Ticket Granting Ticket is a ticket that allows you to get other tickets, it's an important ticket! Contains the clients name, ip address, timestamp, and validity pariod, only good for a certain amount of time. After that, you'll have to re-authenticate to the network. Is encrypted with the Key Distribution Center's secret key, the client can't decrypt it. The client also gets an Ticket Granting Serivce (TGS) Session Key. Used to encrypt the communication
+
+**Resources**
+* [Kerberos - CompTIA Security+ SY0-401: 5.1](https://www.youtube.com/watch?v=VpBCJ8vS7T0)
+
+#### Samba
+|            Samba            |                                                                      |
+|-----------------------------|----------------------------------------------------------------------|
+|        **Command**          |                               Notes                                  |
+|   `sudo pacman -Syu samba`  | Install [Samba ~ Arch Linux](https://wiki.archlinux.org/title/Samba) |
+| `sudo systemctl status smb` |                  Check Samba Status with systemd                     |
+| `sudo systemctl start smb`  |                        Start Samba with systemd                      |
+|                        `sudo groupadd --system smbgroup`                        | Create the system group |
+| `sudo useradd --system --no-create-home --group smbgroup -s /bin/false smbuser` | Create the system user without an home dir, add smbuser to the smbgroup system group, don't let the user smbuser to login at all. |
+| `sudo chown -R smbuser:smbgroup /share` |  |
+
+**SMB client software is available for UNIX-based systems. Samba software allows UNIX and Linux servers.**
+
+**Configure The /etc/samba/smb.conf File**
+The `/etc/samba/smb.conf` file stores Samba [configuration data](https://git.samba.org/samba.git/?p=samba.git;a=blob_plain;f=examples/smb.conf.default;hb=HEAD). Because the `samba` package does not provide this file, create the file before starting `smb.service`<br>
+```sh
+[global]
+    server string = A Basic Description
+    workgroup = NameOfBusiness   # Or anything to make it more organized.
+    security  = user   # If you have a windows domain or an active directory server you can use this. User level security,  Not the best when it comes to security and it comes with some challenges. On a smaller network, its fine.
+    map to guest = Bad User   # Login is not required! Add `never` if you need the user to login.
+    #usershare allow guests = yes   # Allow guests
+    #hosts allow = 192.168.0.0/16   # Allow anyone that starts with an IPv4 range of 192.168
+    #hosts deny = 0.0.0.0/0   # Deny all users that does not start with an IPv4 range of 192.168
+    name resolve order = bcast host   # Checks broadcat first then the /etc/hosts file
+    include = /etc/samba/shares.conf
+```
+
+**Configure The /etc/samba/shares.conf File**<br>
+This file is what folders to share.
+```sh
+[Public Files]   # The share name
+path = /share/public_shares   # Share the folder named public_shares
+#read only = no   # This makes it writeable
+#guest ok = yes   # Allows guests
+force user = smbuser   # Anything that is created within the folder will be owned by the `smbuser` user. Make sure the user exists in Linux, system user type.
+force group = smbgroup   # Anything that is created within the folder will be owned by the `smbgroup` group. Make sure the group exists in Linux, system group type.
+create mask = 0664   # Set the permissions for newly created files
+force create mode = 0664
+directory mask = 0775   # Newly created directories will have permission. Note, with Directories you need to have the excute bit in order to go inside of the directory.
+force directory mode = 0775
+public = yes
+writable = yes # Allow changes
+```
+
+**Resources**
+* [Setting up Simple Samba File Shares](https://www.youtube.com/watch?v=7Q0mnAT1MRg)
+* [How to setup Samba for File Sharing in Linux](https://www.youtube.com/watch?v=oRHSrnQueak)
+
+### 3.2 Given a scenario, configure and implement firewalls on a Linux system
+### 3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system
+### 3.4 Explain account hardening techniques and best practices
+### 3.5 Explain cryptographic concepts and technologies in a Linux environment
+### 3.6 Explain the importance of compliance and audit procedures
 
 ## 4.0 Automation, Orchestration, and Scripting
 |   |                         4.0 Automation, Orchestration, and Scripting                          |
