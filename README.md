@@ -444,7 +444,6 @@ writable = yes # Allow changes
 **Resources**
 * [Setting up Simple Samba File Shares](https://www.youtube.com/watch?v=7Q0mnAT1MRg)
 * [How to setup Samba for File Sharing in Linux](https://www.youtube.com/watch?v=oRHSrnQueak)
-
 ### 3.2 Given a scenario, configure and implement firewalls on a Linux system
 ### 3.3 Given a scenario, apply operating system (OS) hardening techniques on a Linux system
 ### 3.4 Explain account hardening techniques and best practices
@@ -459,6 +458,97 @@ writable = yes # Allow changes
 |4.3|                 Summarize Python basics used for Linux system administration                  |
 |4.4|                     Given a scenario, implement version control using Git                     |
 |4.5|         Summarize best practices and responsible uses of artificial intelligence (AI)         |
+### 4.1 Summarize the use cases and techniques of automation and orchestration in a Linux environment
+**Infrastructure as code**
+    * Ansible
+        * Playbooks
+        * Inventory
+        * Modules
+        * Ad hoc
+        * Collections
+        * Facts
+        * Agentless
+
+**Puppet**
+    * Classes
+    * Certificates
+    * Modules
+    * Facts
+    * Agent/Agentless
+
+**OpenTofu**
+* Provider
+* Resource
+* State
+* Application programming interface (API)
+
+**Unattended deployment**
+* Kickstart
+* Cloud-init
+
+**Continuous integration/Continuous deployment (CI/CD)
+* Version control
+* Shift left testing
+* GitOps
+* Pipelines
+* DevSecOps
+
+**Deployment orchestration**
+* Kubernetes
+    * ConfigMaps
+    * Secrets
+    * Pods
+    * Deployments
+    * Volumes
+    * Services
+    * Variables
+* Docker Swarm<br>
+Swarm mode is an advanced feature for managing a cluster of Docker daemons
+    * Service
+    * Nodes
+    * Tasks
+    * Networks
+    * Scale
+* Docker/Podman Compose
+    * Compose file
+    * Up/down
+    * Logs
+### 4.2 Given a scenario, perform automated tasks using shell scripting
+### 4.3 Summarize Python basics used for Linux system administration
+### 4.4 Given a scenario, implement version control using Git
+**Install git on Arch Linux**<br>
+`sudo pacman -Syu git`
+
+|        Command       |                       Note                      |
+|----------------------|-------------------------------------------------|
+|  `git init myrepo`   |           Initialize a blank repository         |
+| `git add nameOfFile` |        Add file to the tracked files list       |
+|     `git config`     | Allows to set a configuration parameter for git |
+| `git config --global user.name "NAME"` | Set the name for the user |
+| `git config --global user.email "name@example.com"` | Set the email address for the user |
+| `git commit -m "Commit Message"` | Make Sure To Write a Very Good Message For This Commit!!! This does not send the changes to a remote server. |
+|     `git commit`    | This opens an text editer insted of using the CLI to add an message. |
+| `git diff FILENAME` | `+` Added line<br>`-` Removed line<br>This shows what has changed. |
+| `git log --oneline` | List of commits |
+| `` |  |
+
+* .gitignore
+* branch
+* checkout
+* clone
+* fetch
+* merge
+    * squash
+* pull
+* push
+* rebase
+* reset
+* stash
+* tag
+
+**Resources**
+* [Git Essentials](https://www.youtube.com/watch?v=u1Zvkqjx0Ik)
+### 4.5 Summarize best practices and responsible uses of artificial intelligence (AI)
 
 ## 5.0 Troubleshooting
 |   |                          5.0 Troubleshooting                                    |
