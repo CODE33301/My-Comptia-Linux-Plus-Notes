@@ -513,6 +513,9 @@ Swarm mode is an advanced feature for managing a cluster of Docker daemons
     * Compose file
     * Up/down
     * Logs
+
+**Resources**
+
 ### 4.2 Given a scenario, perform automated tasks using shell scripting
 ### 4.3 Summarize Python basics used for Linux system administration
 ### 4.4 Given a scenario, implement version control using Git
@@ -558,3 +561,94 @@ Swarm mode is an advanced feature for managing a cluster of Docker daemons
 |5.3|  Given a scenario, analyze and troubleshoot networking issues on a Linux system |
 |5.4|   Given a scenario, analyze and troubleshoot security issues on a Linux system  |
 |5.5|           Given a scenario, analyze and troubleshoot performance issues         |
+### 5.1 Summarize monitoring concepts and configurations in a Linux system
+
+**Resources**
+### 5.2 Given a scenario, analyze and troubleshoot hardware, storage, and Linux OS issues
+
+**Resources**
+### 5.3 Given a scenario, analyze and troubleshoot networking issues on a Linux system
+**Common issues**
+* Misconfigured firewalls
+* DHCP issues
+* DNS issues
+* Interface misconfiguration
+    * Maximum transmission unit (MTU) mismatch
+    * Bonding
+    * Media access control (MAC) spoofing
+    * Subnet
+    * Cannot ping server
+* Routing issues
+    * Gateway
+* Server unreachable
+* IP conflicts
+* Dual stack issues (IPv4 and IPv6)
+* Link down
+* Link negotiation issues
+**Resources**
+### 5.4 Given a scenario, analyze and troubleshoot security issues on a Linux system
+**Common issues**
+* SELinux issues
+    * Policy
+    * Context
+    * Booleans
+* File and directory permission issues
+    * ACLs
+    * Attributes
+* Account access
+* Unpatched vulnerable systems
+* Exposed or misconfigured services
+* **Remote access issues**<br>
+**What to do when a user is unable to log into a server via SSH**
+    1. Try to connect to the server via SSH and if you're able to connect, then SSH is working.
+    1. If this user particular user is the only one expersiancing this problem. 
+        1. Try tailing the authentication logs.
+            ```sh
+            tail -f /var/log/auth.log   # Debian
+            tail -f /var/log/errors.log   # Arch Linux
+            ```
+        1. Tell the user to try to log in again.
+        1. After asking the user, you will see that the log file will update live, because `-f` with the command `tail` is follow mode. If the user is trying to log into the server, you'll see the error message in the log live.
+* 
+
+* Certificate issues
+* Misconfigured package repository
+* Use of obsolete or insecure protocols and ciphers
+* Cipher negotiation issues
+
+**Resources**
+* [10 Common Linux Issues and How to Fix Them](https://www.youtube.com/watch?v=xsdFNpThetE)
+### 5.5 Given a scenario, analyze and troubleshoot performance issues
+**Common symptoms**
+* Swapping
+* Out of memory
+* Slow application response
+* System unresponsiveness
+* High CPU usage
+* High load average
+* High context switching
+* High failed log-in attempts
+* Slow startup
+* High input/output (I/O) wait time
+* Packet drops
+* Jitter
+* Random disconnects
+* Random timeouts
+* High latency
+
+**Slow response times**<br>
+**Slow performance in GNOME Desktop Environment (DE)**<br>
+**Tracker**: Scans files on your system to find them faster, an indexing service. Tracker will index everything, this will make the system slow. Which this makes gnome look bad but gnome is a very fast and efficient Desktop Environment (DE).
+    1. Create a file `touch /mnt/truenas/archive/.trackerignore` and leave it empty. This will stop tracker from scanning that directory. Perfect for file shares unless you whant Tracker to scan that directory. The main problem is that Tracker will scan everything you have on your computer, the / root, anything that is mounted, everything. That takes time and will make gnome Desktop Environment very slow. Just create the .trackerignore file in the root of the file share that you don't what to scan.
+
+* High disk latency
+* Low throughput
+* Blocked processes
+* Hardware errors
+* Sluggish terminal behavior
+* Exceeding baselines
+* Slow remote storage response
+* CPU bottleneck
+
+**Resources**
+* [10 Common Linux Issues and How to Fix Them](https://www.youtube.com/watch?v=xsdFNpThetE)
