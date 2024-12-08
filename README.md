@@ -150,6 +150,65 @@ rsync -aAXv --delete --exclude={/home/Skip1/* /home/Skip2/* /home/Skip3/*} /home
 * [Rsync Backup on Linux](https://youtu.be/OEfboN-Nb2s?si=y9Hpqzd7SHv60qq3)
 * [DD tutorial - how to clone, backup and restore disks and partitions](https://www.youtube.com/watch?v=UcF4JoFqd9E&t=423s)
 ### 1.7 Summarize virtualization on Linux systems
+**Linux hypervisors**
+* Quick Emulator (QEMU)
+* Kernel-based Virtual Machine (KVM)
+
+**Virtual machines (VMs)**
+* Paravirtualized drivers
+* VirtIO
+* Disk image operations
+    * Convert
+    * Resize
+    * Image properties
+* VM states
+* Nested virtualization
+
+**VM operations**
+* Resources
+    * Storage
+    * RAM
+    * Central processing unit (CPU)
+    * Network
+* Baseline image templates
+* Cloning
+* Migrations
+* Snapshots
+
+**Bare metal vs. virtual machines**
+
+**Network types**
+* Bridged
+* Network address translation (NAT)
+* Host-only/isolated
+* Routed
+* Open
+
+**Virtual machine tools**
+* **libvirt Application Programming Interface (API)**
+    * You can use tools for example **virsh**, **virt-manager**, **virt-install**, & **virt-viewer** to interact with libvirt API.
+    * Provides the software building blocks for developers to write their own virtualization solutions.
+    * Several hypervisors, including VMware ESXi, KVM, and QEMU, are all built using libvirt. It provides a solid foundation for Linux-based virtualization.
+    * 
+* virsh
+    * Is an user/client tool
+* virt-manager
+    * Is an user/client tool
+* virt-install
+    * Is an user/client tool
+* virt-viewer
+    * Is an user/client tool
+
+| user/client tools  |   API   ||
+|--------------------|---------|---|
+|     virsh (GUI)    |||
+| virt-manager (CLI) |||
+| virt-install (CLI) | libvirt | Machine Emulator |
+|  virt-viewer (CLI) |||
+|||
+
+**Resources**
+*
 
 ## 2.0 Services and User Management
 |   |                        2.0 Services and User Management                     |
@@ -161,6 +220,66 @@ rsync -aAXv --delete --exclude={/home/Skip1/* /home/Skip2/* /home/Skip3/*} /home
 |2.5|                  Given a scenario, manage Linux using systemd               |
 |2.6|    Given a scenario, manage applications in a container on a Linux server   |
 ### 2.1 Given a scenario, manage files and directories on a Linux system
+**Utilities**
+* cd
+* cp
+* diff
+* file
+* find
+* ln
+* locate
+* ls
+* lsof
+* mkdir
+* mv
+* pwd
+* rm
+* rmdir
+* sdiff
+* stat
+* touch
+
+**Links**<br>
+There are two tyes of links `Hard links` & `Symbolic links (soft)`. `ext2`, `ext3`, `ext4`, and `XFS` file systems all support hard and Symbolic links.
+* **Symbolic link**
+* **Hard link**
+
+**Device types in /dev**<br>
+**Identify Block, Character, and Special Devices**<br>
+ With the command `ls`, execute `ls -l /dev`. On the left side, the permissions field. The letter `c` is a **character device** or a **special file**, `b` is a **block deivce**.
+```sh
+# This is a M.2 device, This is an example of a Block device.
+brw-rw----   1 root       disk      259,     0 Dec  7 23:27 nvme1n1
+```
+A way to get data in and out of your linux system. This is how your linux system communicates.
+* **Block devices**<br>
+Processes Input/Output in blocks and can be mounted. A block device uses buffers and caches to make transfers of large amounts of data faster. Any file storage devices are going to be block devices.
+    * Storage devices, Hard Drives.
+        * Data is moved in blocks, and the device can be mounted as a storage area, Information may be cached.
+    * Partitions
+* **Character devices**<br>
+Processes Input/Output on a per-character basis
+A character device is one character at a time, for example any characters a stream of data going in or out very quicky.
+    * Keyboards, Deal with data on a per-byte or character level.
+    * Mouse
+    * Serial Port
+* **Special character devices**<br>
+    * The `/dev/null`, `/dev/zero`, and `/dev/urandom` files are known as special device files.
+    * With the grep command and with the -e extended option `ls -l /dev | grep --color -e null -e zero -e urandom`. you can see that they are character special files.
+        ```sh
+        crw-rw-rw-   1 root       root        1,     3 Dec  7 23:27 null
+        crw-rw-rw-   1 root       root        1,     9 Dec  7 23:27 urandom
+        crw-rw-rw-   1 root       root        1,     5 Dec  7 23:27 zero
+        ```
+    * The `/dev/null` file
+        * 
+    * The `/dev/zero` file<br>
+    Filling storage capacity. For example, a sysadmin can create a file of a specified size as part of testing. 
+        * To create a one MiB file, <br>`dd if=/dev/zero of=FILE_NAME.txt count=1024 bs=1024`.
+            * `if=FILE`, Read from FILE insted of stdin.
+            * `of=FILE`, Write to FILE insted of stdin.
+    * The `/dev/urandom` file<br>
+    Can create a source of random characters for example creating completely randomized passwords. This command runs on low-performing systems at the risk of consuming all available resources.
 ### 2.2 Given a scenario, perform local account management in a Linux environment
 ### 2.3 Given a scenario, manage processes and jobs in a Linux environment
 
